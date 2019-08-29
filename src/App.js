@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from "react";
+import axios from 'axios';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
+class Home extends Component {
+  state = {
+    pokemons: []
+  }
+  componentDidMount() {
+    const url = 'https://pokeapi.co/api/v2/ability/';
+    axios.get(url).then(response => response.data.results)
+      .then((results) => {
+        this.setState({ pokemons: results })
+        console.log(results)
+      })
+  }
+
+  render() {
+    return (
+      <div>
+        <Container>
+          <h1>Pokemon List</h1>
+          
+              <Row>
+              { 
+                this.state.pokemons.map((pokemon) => (
+                  <Col sm="6">{pokemon.name}</Col>
+                ))
+              }
+              </Row>
+        </Container>
+      </div>
+    );
+  }
 }
 
-export default App;
+export default Home;
